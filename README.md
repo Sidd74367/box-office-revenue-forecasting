@@ -15,7 +15,7 @@ How well does a film's opening predict how much it earns over its full run? Usin
 | Does early revenue predict total gross? | Yes: opening weekend explains **~91%** of the variation across films (elasticity ≈ 1.0) |
 | Do franchise / budget / runtime add anything? | No: none are statistically significant once opening weekend is included |
 | Which early window predicts best? | Week 2 is the single strongest in-sample (R² = 0.987); Weeks 1–2 together carry almost all the signal |
-| Best daily-revenue model? | **Regression + AR(1)** — lowest out-of-sample error (RMSE), beating more complex ARMA models |
+| Best daily-revenue model? | **Regression + AR(1)** lowest out-of-sample error (RMSE), beating more complex ARMA models |
  
 ---
  
