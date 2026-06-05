@@ -23,11 +23,11 @@ How well does a film's opening predict how much it earns over its full run? Usin
  
 **1. Cross-sectional model.** A log-log regression of total domestic gross on opening-weekend revenue, then extended with franchise, budget, and runtime controls plus a franchise interaction term. The log transforms handle the heavy right-skew (a few huge hits stretch the data), which is well documented in the box-office literature (De Vany & Walls, 1999).
  
-**2. Early-window comparison.** Separate log-log regressions on Day 1, Week 1, Week 2, and Week 3 revenue, then a combined model — to pin down exactly which early window carries the predictive power.
+**2. Early-window comparison.** Separate log-log regressions on Day 1, Week 1, Week 2, and Week 3 revenue, then a combined model to pin down exactly which early window carries the predictive power.
  
-**3. Time-series model.** Instead of differencing the series (which made the variance worse here), the trend and the day-of-week pattern are removed with a regression, leaving stationary residuals. Those residuals are then modeled with AR/ARMA specifications; AR(1) comes out on top on both AIC and BIC.
+**3. Time-series model.** Instead of differencing the series (which made the variance worse here), the trend and seasonality pattern are removed with a regression, leaving stationary residuals. Those residuals are then modeled with AR/ARMA specifications; AR(1) comes out on top on both AIC and BIC.
  
-**4. Out-of-sample validation.** The full model is trained on the **first 14 days** (two weeks, matching the window that drives the cross-sectional results) of two held-out films — *M3GAN* and *Shazam! Fury of the Gods* — and used to **forecast through day 50**. Six candidate residual-dynamics specifications are then compared on forecast error (RMSE/MAE).
+**4. Out-of-sample validation.** The full model is trained on the **first 14 days** (two weeks, matching the window that drives the cross-sectional results) of two held-out films  *M3GAN* and *Shazam! Fury of the Gods*  and used to **forecast through day 50**. Six candidate residual-dynamics specifications are then compared on forecast error (RMSE/MAE).
  
 ---
  
