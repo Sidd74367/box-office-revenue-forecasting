@@ -2,7 +2,7 @@
  
 **Forecasting a film's total box office gross from its early performance, using cross-sectional regression and time-series modeling.**
  
-How well does a film's opening predict how much it earns over its full run? Using 30 wide-release films from 2023 and ~2,300 daily revenue observations, this project builds two complementary models: a cross-sectional regression that links early revenue to total gross, and a regression-plus-AR(1) time-series model that captures how daily revenue evolves day to day. The headline result: **opening weekend alone explains ~91% of the variation in total domestic revenue**, with an elasticity close to 1 (a 1% bigger opening lines up with roughly a 1% bigger total).
+How well does a film's opening predict how much it earns over its full run? Using 30 wide-release films from 2023 and ~2,300 daily revenue observations, this project builds two complementary models: a cross-sectional regression that links early revenue to total gross, and a regression + AR(1) time series model that captures how daily revenue evolves day to day. The headline result: **opening weekend alone explains ~91% of the variation in total domestic revenue**, with an elasticity close to 1 (a 1% bigger opening lines up with roughly a 1% bigger total).
  
 > Originally completed as an econometrics final project (Econ 423). Reframed here as a forecasting case study.
  
