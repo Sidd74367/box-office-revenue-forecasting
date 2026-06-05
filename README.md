@@ -1,2 +1,97 @@
-# box-office-revenue-forecasting
-Time Series Forecasting to predict box office revenue for movies
+# Predicting Domestic Box Office Revenue
+ 
+**Forecasting total box office gross from early-window performance, using cross-sectional regression and time-series modeling.**
+ 
+How well does a film's opening predict its full domestic run? Using 30 wide-release films from 2023 and ~2,300 daily revenue observations, this project builds two complementary models: a cross-sectional regression linking early revenue to total gross, and a regression-plus-AR(1) time-series model for daily revenue dynamics. The headline result: **opening weekend alone explains ~91% of the variation in total domestic revenue**, with an elasticity close to 1.
+ 
+> Originally completed as an econometrics final project (Econ 423). Reframed here as a forecasting case study.
+ 
+---
+ 
+## Key Results
+ 
+| Question | Finding |
+|---|---|
+| Does early revenue predict total gross? | Yes — opening weekend explains **~91%** of cross-sectional variation (elasticity ≈ 1.0) |
+| Do franchise / budget / runtime add signal? | No — all insignificant once opening weekend is included |
+| Which early window is most predictive? | Week 2 is the single strongest in-sample (R² = 0.987); Weeks 1–2 carry almost all the information |
+| Best daily-revenue model? | **Regression + AR(1)** — lowest out-of-sample RMSE, beating higher-order ARMA |
+ 
+---
+ 
+## Approach
+ 
+**1. Cross-sectional model.** A log-log regression of total domestic gross on opening-weekend revenue, extended with franchise, budget, and runtime controls plus a franchise interaction. Log transforms handle the heavy right-skew documented in the box-office literature (De Vany & Walls, 1999).
+ 
+**2. Early-window comparison.** Separate log-log regressions on Day 1, Week 1, Week 2, and Week 3 revenue, then a combined model, to isolate where predictive information actually lives.
+ 
+**3. Time-series model.** Rather than differencing (which inflated variance here), trend and day-of-week seasonality are removed via regression, leaving stationary residuals. Residual dynamics are modeled with AR/ARMA specs; AR(1) wins on both AIC and BIC.
+ 
+**4. Out-of-sample validation.** The full hybrid model is trained on the first 40 days of two held-out films (*M3GAN*, *Shazam! Fury of the Gods*) and used to forecast days 41–50. Six candidate residual-dynamics specs are compared on RMSE/MAE.
+ 
+---
+ 
+## Selected Figures
+ 
+<!-- IMAGE PLACEHOLDER 1
+   Use Figure 4 from the PDF (page 7): "Opening Weekend vs Total Revenue (Log-Log)" scatter.
+   Screenshot it, save as images/log_log_scatter.png -->
+![Opening weekend vs total revenue, log-log](images/log_log_scatter.png)
+*Opening weekend vs. total domestic revenue (log-log). Correlation 0.946, R² 0.896, elasticity 0.986.*
+ 
+<!-- IMAGE PLACEHOLDER 2
+   Use Figure 3 from the PDF (page 6): "Daily Box Office Revenue Across All Movies" (first 50 days).
+   Save as images/daily_revenue_all_films.png -->
+![Daily revenue across all films](images/daily_revenue_all_films.png)
+*Daily revenue, first 50 days — sharp post-release decay plus a weekly weekend cycle.*
+ 
+<!-- IMAGE PLACEHOLDER 3
+   Use the forecast plot from the PDF (page 19): "Forecast vs Actual (log daily revenue) — Regression + AR(1)".
+   Save as images/forecast_vs_actual.png -->
+![Forecast vs actual](images/forecast_vs_actual.png)
+*Out-of-sample forecast vs. actual under the Regression + AR(1) hybrid.*
+ 
+---
+ 
+## Repository Structure
+ 
+```
+.
+├── README.md
+├── analysis.R                  # Full pipeline: figures, regressions, time-series models
+├── report/
+│   └── Final_Project.pdf       # Full write-up with all tables and figures
+├── data/
+│   ├── dataset_1_movies.csv    # Movie-level (30 films): opening, total, franchise, budget, runtime
+│   └── dataset_2_daily.csv     # Daily-level (~2,300 obs): daily gross by film and day
+└── images/                     # Figures for this README
+```
+ 
+> **Note:** the raw datasets are not redistributed here. They were collected from [The Numbers](https://www.the-numbers.com/). `analysis.R` expects `dataset_1_movies.csv` and `dataset_2_daily.csv` in the working directory.
+ 
+---
+ 
+## Running It
+ 
+```r
+# Install dependencies (first run only)
+install.packages(c("readr","dplyr","ggplot2","scales","moments","forecast","tidyr"))
+ 
+# Set the working directory to the folder containing the two CSVs, then:
+source("analysis.R")
+```
+ 
+`analysis.R` is organized into labeled sections that map one-to-one to the figures and tables in the report (distributions → cross-sectional model → early-window comparison → detrending → residual dynamics → out-of-sample forecast).
+ 
+---
+ 
+## Tech
+ 
+`R` · `forecast` (ARIMA / auto.arima) · `dplyr` · `ggplot2` · OLS regression · ARMA modeling · log-log elasticity estimation · out-of-sample backtesting
+ 
+## References
+ 
+- De Vany, A. & Walls, W. D. (1999). *Uncertainty in the Movie Industry.* Journal of Cultural Economics.
+- Eliashberg, J., Elberse, A. & Leenders, M. (2006). *The Motion Picture Industry.* Marketing Science.
+- Walls, W. D. (2005). *Modelling Movie Success when "Nobody Knows Anything".* Journal of Cultural Economics.
+ 
